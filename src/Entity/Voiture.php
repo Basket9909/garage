@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\VoitureRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
+
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VoitureRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=VoitureRepository::class)
@@ -23,6 +26,11 @@ class Voiture
      * @ORM\Column(type="string", length=255)
      */
     private $marque;
+
+     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -94,6 +102,20 @@ class Voiture
         $this->images = new ArrayCollection();
     }
 
+    /**
+     * Permet d'initialiser le slug automatiquement
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function initializeSlug(){
+        if(empty($this->slug)){
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +129,18 @@ class Voiture
     public function setMarque(string $marque): self
     {
         $this->marque = $marque;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
