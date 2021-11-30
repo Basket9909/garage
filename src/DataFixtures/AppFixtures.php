@@ -21,28 +21,61 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
         $slugify = new slugify();
         $typeTransmition = ['avant','arriére','integrale'];
-
+        $tabMarque = ['Audi','Alfa Romeo','BMW','Volswagen','Renault','Citroën','Ford'];
+        $modeleAudi = ['A1','A4','TT','A5','A6'];
+        $modeleAlfa = ['Giulia','Giulietta','Stelvio','Gtv','Brera'];
+        $modeleBmw = ['I3','I4','I8','Serie 1','Serie 2'];
+        $modeleVw = ['Caddy','California','Golf','Arteon','Crafter'];
+        $modeleRenault = ['Clio','Twingo','Megane','Espace','Kadjar'];
+        $modeleCitroen = ['C2','C3','C4','Berlingo','C5'];
+        $modeleFord = ['Fiesta','Focus','Galaxy','Kuga','Ka'];
+        $carburants = ['Essence','Diesel','Lpg'];
+ 
         for($i = 1; $i <= 30 ; $i++)
         {
             $car = new Voiture();
-            //$marque = $faker->vehicleBrand();
-            //$slug = $slugify->slugify($marque);
-            //$modele = $faker->vehicleModel();
-            //$carburant = $faker->vehicleFuelType();
+            $marque = $faker->randomElement($tabMarque);
+            if($marque === 'Audi')
+            {
+                $modele = $faker->randomElement($modeleAudi);
+            }
+            else if($marque ==='Alfa Romeo')
+            {
+                $modele = $faker->randomElement($modeleAlfa);
+            }
+            else if($marque ==='BMW')
+            {
+                $modele = $faker->randomElement($modeleBmw);
+            }
+            else if($marque ==='Volswagen')
+            {
+                $modele = $faker->randomElement($modeleVw);
+            }
+            else if($marque ==='Renault')
+            {
+                $modele = $faker->randomElement($modeleRenault);
+            }
+            else if($marque ==='Citroën')
+            {
+                $modele = $faker->randomElement($modeleCitroen);
+            }else{
+                $modele = $faker->randomElement($modeleFord);
+            }
+            $carbu = $faker->randomElement($carburants);
             $year = $faker->biasedNumberBetween(1995,2015);
             $transmition = $faker->randomElement($typeTransmition);
             $description = $faker->paragraph(2);
             $option = '<p>'.join('</p><p>',$faker->paragraphs(5)).'</p>';
 
-            $car->setMarque('Ford')
-                ->setSlug('Ford-'.rand(1,100000))
-                ->setModele('Fiesta')
-                ->setKm(rand(1000,10000))
+            $car->setMarque($marque)
+                ->setSlug($marque.'-'.$modele.'-'.$year.'-'.rand(1,10000))
+                ->setModele($modele)
+                ->setKm(rand(5000,10000))
                 ->setPrix(rand(5000,50000))
                 ->setProprietaire(rand(1,5))
                 ->setCylindree(rand(90,900))
                 ->setPuissance(rand(90,900))
-                ->setCarburant('Diesel')
+                ->setCarburant($carbu)
                 ->setMiseCirculation($year)
                 ->setTransmition($transmition)
                 ->setDescription($description)
