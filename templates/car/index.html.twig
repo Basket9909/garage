@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces{% endblock %}
+
+{% block body %}
+<div class="container mt-3">
+    <div class="d-flex justify-content-evenly flex-wrap">
+        {% for car in cars %}
+            {% set url = path('cars_show', {'slug':car.slug}) %}
+                <div class="card mt-3 mb-3" style="width: 18rem;">
+                <a href="#">
+                    <img src="{{car.coverImage}}" class="card-img-top" alt="photo">
+                </a>
+                <div class="card-body">
+                    <h3 class="card-title">{{car.marque}} {{car.modele}}</h3>
+                    <h4 class="card-title">{{car.km}} Km</h4>
+                    <h4 class="card-title">{{car.prix}} €</h4>
+                    <p class="card-text">{{car.description}}</p>
+                    <a href="{{url}}" class="btn btn-primary">Voir plus</a>
+                </div>
+                </div> 
+        {% endfor %}    
+    </div>
+</div>
+
+{% endblock %}
