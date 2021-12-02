@@ -116,6 +116,15 @@ class Voiture
         }
     }
 
+     /**
+     * Permet d' avoir la marque et le modele de la voiture
+     *
+     * @return Response
+     */
+    public function getFullCar(){
+        return "{$this->marque} {$this->modele}";
+    }
+
     public function getId(): ?int
     {
         return $this->id;

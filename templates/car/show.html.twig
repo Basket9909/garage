@@ -1,1 +1,53 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}{{car.FullCar}}{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center mt-3 mb-3">{{car.FullCar}}</h1>
+    <h1 class="text-center  mt-3 mb-3">{{car.prix}} €</h1>
+    <div class="container mt-3 mb-3">
+        <div class="raw d-flex justify-content-between">
+            <div class="col-md-4 mb-3">
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        {% for image in car.images %}
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
+                        {% endfor %} 
+                    </div>
+                    <div class="carousel-inner">
+                        {% for image in car.images %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img src="{{image.url}}" class="d-block w-100" alt="image de {{car.FullCar}}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>{{car.FullCar}}</h5>
+                                        <p>{{image.caption}}</p>
+                                    </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+                <div class="col-md-6 mb-3 border p-3">
+                <h2 class="mb-3"><strong>Spécifications</strong></h2>
+                    <h4>Marque : {{car.marque}}</h4>
+                    <h4>Modèle : {{car.modele}}</h4>
+                    <h4>Kilométres : {{car.km}} Km</h4>
+                    <h4>Nb de propriétaires : {{car.proprietaire}}</h4>
+                    <h4>Cylindrée : {{car.cylindree}}</h4>
+                    <h4>Puissance : {{car.puissance}} CV</h4>
+                    <h4>Carburant : {{car.carburant}}</h4>
+                    <h4>Année de mise en circulation : {{car.miseCirculation}}</h4>
+                    <h4>Transmition : {{car.transmition}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="text-center mt-3 mb-3">Plus d'options</h2>
+    <div class="container d-flex justify-content-center">
+        <div class="col-md-9 mb-3 p-3 border">
+        <h3 class="alignement">{{car.moreOption | raw | nl2br}}</h3>
+        </div>
+    </div>
+
+{% endblock %}
