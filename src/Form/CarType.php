@@ -22,9 +22,7 @@ class CarType extends ApplicationType
         $builder
             ->add('marque',TextType::class,$this->getConfiguration("Marque","Donner la marque de la voiture"))
             ->add('modele',TextType::class,$this->getConfiguration("Modéle","Donner le modéle de la voiture"))
-            ->add('slug', TextType::class, $this->getConfiguration('Slug','Adresse web (automatique',[
-                'required' => false
-            ]))
+            
             ->add('km', IntegerType::class,$this->getConfiguration("Nombre de kilométre","Donner le nombre de kilométre déja roulé"))
             ->add('prix', MoneyType::class, $this->getConfiguration("Prix","Donner le rpix de la voiture"))
             ->add('proprietaire', IntegerType::class,$this->getConfiguration("Nombre de propriétaire","Donner le nombre de propriétaire"))

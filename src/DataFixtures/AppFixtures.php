@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
         $users = [];
         $genres = ['male','femelle'];
 
-       /* for($u = 1; $u <= 10; $u++)
+       for($u = 1; $u <= 10; $u++)
         {
             $user = new User();
             $genre = $faker->randomElement($genres);
@@ -43,19 +43,21 @@ class AppFixtures extends Fixture
             $picture = 'https://randomuser.me/api/portraits/';
             $pictureId = $faker->numberBetween(1,99).'.jpg';
             $picture .= ($genre =='male' ? 'men/' : 'women/').$pictureId;
-
+            $name = $faker->firstName($genre);
             $hash = $this->passwordHasher->hashPassword($user,'password');
 
-            $user->setFirstName($faker->firstName($genre))
+            $user->setFirstName($name)
                 ->setLastName($faker->lastName())
                 ->setEmail($faker->email())
                 ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
                 ->setPassword($hash)
+                ->setRoles(['ROLE_USER'])
+                ->setSlug($name.rand(1,999))
                 ->setPicture($picture);
 
             $manager->persist($user);
             $users[] = $user; // ajouter l'utilisateur au tableau pour les annonces    
-        }*/
+        }
 
         
         $typeTransmition = ['avant','arriére','integrale'];
@@ -106,7 +108,7 @@ class AppFixtures extends Fixture
             $option = '<p>'.join('</p><p>',$faker->paragraphs(5)).'</p>';
 
             // liaison avec user
-            //$user = $users[rand(0, count($users)-1)];
+            $user = $users[rand(0, count($users)-1)];
 
             $car->setMarque($marque)
                 ->setSlug($marque.'-'.$modele.'-'.$year.'-'.rand(1,10000))
@@ -121,8 +123,8 @@ class AppFixtures extends Fixture
                 ->setTransmition($transmition)
                 ->setDescription($description)
                 ->setMoreOption($option)
-                ->setCoverImage('https://picsum.photos/id/'.rand(1,700).'//500/500');
-                //->setAuthor($user);
+                ->setCoverImage('https://picsum.photos/id/'.rand(1,700).'//500/500')
+                ->setAuthor($user);
 
             $manager->persist($car);
 

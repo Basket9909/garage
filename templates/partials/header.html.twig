@@ -15,10 +15,27 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ path('cars_index') }}">Vente</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ path('cars_create') }}">Ajouter</a>
-        </li>
+        {% if app.user %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('cars_create') }}">Ajouter</a>
+          </li>
+        {% endif %}
       </ul>
+
+       <ul class="navbar-nav ms-auto me-5">
+        {% if app.user %}
+          <li class="nav-item">
+            <a href="{{ path('account_logout') }}" class="nav-link">Déconnexion</a>
+          </li>
+        {% else %}
+            <li class="nav-item">
+              <a href="{{path('account_register')}}" class="nav-link">Inscription</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ path('account_login') }}" class="nav-link">Connexion</a>
+            </li>
+        {% endif %}
+                </ul>
 
     </div>
   </div>

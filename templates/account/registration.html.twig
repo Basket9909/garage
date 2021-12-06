@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription au site{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Inscrivez-vous pour poster une annonce</h1>
+        {{form_start(myForm)}}
+
+            {{form_widget(myForm)}}
+            <button type="submit" class="btn btn-success">Confirmez l'Inscription</button>
+        {{form_end(myForm)}}
+    </div>
+{% endblock %} 

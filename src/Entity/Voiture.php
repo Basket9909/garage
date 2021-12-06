@@ -111,6 +111,14 @@ class Voiture
      */
     private $images;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="cars")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    
+
     
 
 
