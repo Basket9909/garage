@@ -5,25 +5,33 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Form\CarType;
 use App\Entity\Voiture;
+use App\Service\PaginationService;
 use App\Repository\VoitureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\When;
 
 class CarController extends AbstractController
 {
     /**
-     * @Route("/cars", name="cars_index")
+     * Permet d'avoir toutes les annonces
+     * @Route("/cars/{page<\d+>?1}", name="cars_index")
+     * @param VoitureRepository $repo
+     * @return Response
      */
-    public function index(VoitureRepository $repo): Response
+    public function index(PaginationService $pagination, $page): Response
     {
+        $pagination->setEntityClass(Voiture::class)
+                    ->setPage($page)
+                    ->setLimit(12);
 
-        $cars = $repo->findAll();
+        //$cars = $repo->findAll();
 
         return $this->render('car/index.html.twig', [
-            'cars' => $cars
+            'pagination' => $pagination
         ]);
     }
 

@@ -5,10 +5,10 @@
 {% block body %}
 <div class="container mt-3">
     <div class="d-flex justify-content-evenly flex-wrap">
-        {% for car in cars %}
+        {% for car in pagination.data %}
             {% set url = path('cars_show', {'slug':car.slug}) %}
                 <div class="card mt-3 mb-3" style="width: 18rem;">
-                <a href="#">
+                <a href="{{url}}">
                     <img src="{{car.coverImage}}" class="card-img-top" alt="photo">
                 </a>
                 <div class="card-body">
@@ -22,5 +22,25 @@
         {% endfor %}    
     </div>
 </div>
+
+  <div class="d-flex justify-content-center">
+            <ul class="pagination">
+            {% set pages = pagination.pages %}
+            {% set page = pagination.page %}
+                <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="{{path('cars_index',{'page': page - 1})}}">&laquo;</a>
+                </li>
+                {% for i in 1..pages %}
+                    <li class="page-item {% if page == i %}active{% endif %}">
+                        <a class="page-link" href="{{path('cars_index',{'page':i})}}">{{i}}</a>
+                    </li>
+                {% endfor %}
+             
+                <li class="page-item {% if page == pages %}disabled{% endif %}">
+                    <a class="page-link" href="{{path('cars_index',{'page': page + 1})}}">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
 {% endblock %}
