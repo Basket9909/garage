@@ -2,24 +2,62 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Image;
-use Faker\Factory;
 use App\Vehicle;
-use Faker\Provider\Fakecar;
+use Faker\Factory;
+use App\Entity\User;
+use App\Entity\Image;
 use App\Entity\Voiture;
 use Cocur\Slugify\Slugify;
+use Faker\Provider\Fakecar;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 class AppFixtures extends Fixture
 {
+
+        // gestion du hash du password
+        private $passwordHasher;
+
+        public function __construct(UserPasswordHasherInterface $passwordHasher)
+        {
+            $this->passwordHasher = $passwordHasher;
+        }
 
     public function load(ObjectManager $manager)
     {
 
         $faker = Factory::create('fr_FR');
         $slugify = new slugify();
+
+        //gestion des utilisateur 
+        $users = [];
+        $genres = ['male','femelle'];
+
+       /* for($u = 1; $u <= 10; $u++)
+        {
+            $user = new User();
+            $genre = $faker->randomElement($genres);
+
+            $picture = 'https://randomuser.me/api/portraits/';
+            $pictureId = $faker->numberBetween(1,99).'.jpg';
+            $picture .= ($genre =='male' ? 'men/' : 'women/').$pictureId;
+
+            $hash = $this->passwordHasher->hashPassword($user,'password');
+
+            $user->setFirstName($faker->firstName($genre))
+                ->setLastName($faker->lastName())
+                ->setEmail($faker->email())
+                ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+                ->setPassword($hash)
+                ->setPicture($picture);
+
+            $manager->persist($user);
+            $users[] = $user; // ajouter l'utilisateur au tableau pour les annonces    
+        }*/
+
+        
         $typeTransmition = ['avant','arriére','integrale'];
         $tabMarque = ['Audi','Alfa Romeo','BMW','Volswagen','Renault','Citroën','Ford'];
         $modeleAudi = ['A1','A4','TT','A5','A6'];
@@ -67,6 +105,9 @@ class AppFixtures extends Fixture
             $description = $faker->paragraph(2);
             $option = '<p>'.join('</p><p>',$faker->paragraphs(5)).'</p>';
 
+            // liaison avec user
+            //$user = $users[rand(0, count($users)-1)];
+
             $car->setMarque($marque)
                 ->setSlug($marque.'-'.$modele.'-'.$year.'-'.rand(1,10000))
                 ->setModele($modele)
@@ -80,14 +121,15 @@ class AppFixtures extends Fixture
                 ->setTransmition($transmition)
                 ->setDescription($description)
                 ->setMoreOption($option)
-                ->setCoverImage('https://picsum.photos/500/500');
+                ->setCoverImage('https://picsum.photos/id/'.rand(1,700).'//500/500');
+                //->setAuthor($user);
 
             $manager->persist($car);
 
             for($j=1 ; $j<=rand(2,5) ; $j++)
             {
                 $image = new Image;
-                $image->setUrl('https://picsum.photos/500/500')
+                $image->setUrl('https://picsum.photos/id/'.rand(1,700).'//500/500')
                       ->setCaption($faker->sentence())
                       ->setVoiture($car);
 

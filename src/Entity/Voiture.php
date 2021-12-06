@@ -9,9 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\VoitureRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VoitureRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Voiture
 {
@@ -24,6 +26,7 @@ class Voiture
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=2, max=255, minMessage="La marque doit faire au moins 2 caractéres", maxMessage="Pas plus de 255 caractéres")
      */
     private $marque;
 
@@ -34,31 +37,37 @@ class Voiture
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(max=255, maxMessage="Pas plus de 255 caractéres")
      */
     private $modele;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Positive(message="Ce nombre doit être positif")
      */
     private $km;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Positive(message="Ce nombre doit être positif")
      */
     private $prix;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive(message="Ce nombre doit être positif")
      */
     private $proprietaire;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Positive(message="Ce nombre doit être positif")
      */
     private $cylindree;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Positive(message="Ce nombre doit être positif")
      */
     private $puissance;
 
@@ -69,6 +78,7 @@ class Voiture
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Length(4,exactMessage="Veuillez renseigner une année valable")
      */
     private $miseCirculation;
 
@@ -79,23 +89,30 @@ class Voiture
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=20, max=300, minMessage="Votre description doit faire plus de 20 caractères", maxMessage="Votre description doit faire moins de 300 caractéres")
      */
     private $description;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=10, minMessage="Vos options doivent faire plus 10 caractères")
      */
     private $moreOption;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url()
      */
     private $coverImage;
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="voiture", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $images;
+
+    
+
 
     public function __construct()
     {
@@ -112,7 +129,7 @@ class Voiture
     public function initializeSlug(){
         if(empty($this->slug)){
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->title);
+            $this->slug = $slugify->slugify($this->marque.'-'.$this->modele.'-'.$this->miseCirculation.'-'.rand(1,1000));
         }
     }
 
@@ -324,6 +341,18 @@ class Voiture
                 $image->setVoiture(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

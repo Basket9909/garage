@@ -6,16 +6,21 @@
     {% form_theme myForm 'car/_collection.html.twig' %}
 
 {% block body %}
-<div class="container">
-
- <h1>Création d'une nouvelle annonce</h1>
-
+    <div class="container">
+        <h1>Création d'une nouvelle annonce</h1>
         {{ form_start(myForm) }}
             {{form_widget(myForm)}}
-            <button type="submit" class="btn btn-primary mt-3">Ajouter la voiture</button>
+            <button type="submit" class="btn btn-primary mt-3">Création d'une annonce</button>
         {{ form_end(myForm) }}
-
-</div>
-
+    </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="/js/annonce.js"></script>
+{% endblock %}
+
+
+
+
+
 

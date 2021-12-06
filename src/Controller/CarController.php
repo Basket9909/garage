@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Voiture;
+use App\Entity\Image;
 use App\Form\CarType;
+use App\Entity\Voiture;
 use App\Repository\VoitureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +36,8 @@ class CarController extends AbstractController
     public function create(Request $request, EntityManagerInterface $manager){
 
         $car = new Voiture();
+
+         
        
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
@@ -42,10 +45,9 @@ class CarController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             foreach($car->getImages() as $image){
-                $image->setAd($car);
+                $image->setVoiture($car);
                 $manager->persist($image);
             }
-
             $manager->persist($car);
             $manager->flush();
 

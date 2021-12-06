@@ -22,6 +22,9 @@ class CarType extends ApplicationType
         $builder
             ->add('marque',TextType::class,$this->getConfiguration("Marque","Donner la marque de la voiture"))
             ->add('modele',TextType::class,$this->getConfiguration("Modéle","Donner le modéle de la voiture"))
+            ->add('slug', TextType::class, $this->getConfiguration('Slug','Adresse web (automatique',[
+                'required' => false
+            ]))
             ->add('km', IntegerType::class,$this->getConfiguration("Nombre de kilométre","Donner le nombre de kilométre déja roulé"))
             ->add('prix', MoneyType::class, $this->getConfiguration("Prix","Donner le rpix de la voiture"))
             ->add('proprietaire', IntegerType::class,$this->getConfiguration("Nombre de propriétaire","Donner le nombre de propriétaire"))
@@ -32,13 +35,13 @@ class CarType extends ApplicationType
             ->add('transmition',TextType::class,$this->getConfiguration("Transmition","Donner le type de transmition de la voiture"))
             ->add('description',TextType::class,$this->getConfiguration("Description","Donner une courte description de la voiture"))
             ->add('moreOption',TextareaType::class,$this->getConfiguration("Option(s)","Donner le(s) otpion(s) supplémentaire"))
-            ->add('coverImage',UrlType::class,$this->getConfiguration("Url de l'image","Donner l'url de l'image"))
+            ->add('coverImage',UrlType::class,$this->getConfiguration("Url de l'image","Donner l'url de l'image de couverture"))
             ->add('images',
             CollectionType::class,
             [
-                'entry_type' => ImageType::class,
-                'allow_add' => true, // permet d'ajouter des élément et surtout avoir le data_protoype
-                'allow_delete' => true
+               'entry_type' => ImageType::class,
+               'allow_add' => true, // permet d'ajouter des élément et surtout avoir le data_protoype
+               'allow_delete' => true
             ]
 
         )
